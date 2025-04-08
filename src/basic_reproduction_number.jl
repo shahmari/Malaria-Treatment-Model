@@ -152,26 +152,6 @@ function compute_endemic_equilibrium(p::Parameters)
     return [SH, IH, SM, E1M, E2M, IM, ST, E1T, E2T, IT]
 end
 
-# function compute_R0_symbolic(p::Parameters)
-#     # Equilibrium susceptible fractions for mosquitoes at the DFE
-#     S_M = (p.h + p.g) / (p.t_rate + p.h + p.g)
-#     S_T = p.t_rate / (p.t_rate + p.h + p.g)
-
-#     # Contribution from untreated mosquitoes:
-#     untreated = S_M * (p.s1M / (p.t_rate + p.s1M + p.g)) * (p.s2M / (p.s2M + p.g))
-
-#     # Contribution from mosquitoes that are initially in the treated compartment:
-#     treated = S_T * (p.s1T / (p.s1T + p.g)) * (p.s2T / (p.s2T + p.g))
-
-#     # Extra contribution: mosquitoes from the untreated branch that get treated during the latent period:
-#     extra = S_M * (p.t_rate / (p.t_rate + p.s1M + p.g)) * (p.s1T / (p.s1T + p.g)) * (p.s2T / (p.s2T + p.g))
-
-#     # Final R0 calculation:
-#     R0 = (p.m * p.a^2 * p.b * p.c / p.r) * (untreated + treated + extra)
-
-#     return R0
-# end
-
 function compute_R0_symbolic(p::Parameters)
     term1 = ((p.h + p.g) * p.s1M * p.s2M) / ((p.t_rate + p.h + p.g) * (p.t_rate + p.s1M + p.g) * (p.s2M + p.g))
     term2 = (p.t_rate * p.s1T * p.s2T) / ((p.t_rate + p.h + p.g) * (p.s1T + p.g) * (p.s2T + p.g))
