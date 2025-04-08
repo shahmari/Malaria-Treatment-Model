@@ -1,11 +1,11 @@
 # Fdb version 4
-["pdflatex"] 1743608576 "c:/Users/shahm/OneDrive/Documents/GitHub/Malaria-Treatment-Model/doc/report-2/report-2.tex" "report-2.pdf" "report-2" 1743608577 0
+["pdflatex"] 1743617096 "c:/Users/shahm/OneDrive/Documents/GitHub/Malaria-Treatment-Model/doc/report-2/report-2.tex" "report-2.pdf" "report-2" 1743617097 0
   "../../fig/brn_txh_heatmap_m.pdf" 1743608527 129559 7713ea7ae9910df78cf81bd52ac204e7 ""
   "../../fig/brn_txh_heatmap_rev_m.pdf" 1743608533 121065 c0ce4d4b6a23b5732d55cdf6b870603e ""
   "../../fig/brn_txh_heatmap_rev_s.pdf" 1743608544 117825 90aadaf43586f85a1c46914da66fb020 ""
   "../../fig/brn_txh_heatmap_s.pdf" 1743608538 124955 705e83ea08ef155088ba68cf25e16ca1 ""
   "../../fig/model_dynamics.pdf" 1741800347 86118 dd1e22486be5bad6ce05bbfd4a044cc8 ""
-  "c:/Users/shahm/OneDrive/Documents/GitHub/Malaria-Treatment-Model/doc/report-2/report-2.tex" 1743608574 8808 5275ab4eb52c999500f78e7d11384f81 ""
+  "c:/Users/shahm/OneDrive/Documents/GitHub/Malaria-Treatment-Model/doc/report-2/report-2.tex" 1743617094 8844 26361e6e0fe76e9d08edeefe25263a00 ""
   "c:/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1699587549 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1699565131 1004 54797486969f23fa377b128694d548df ""
   "c:/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1699565131 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -65,8 +65,8 @@
   "c:/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1699808039 4753703 b262002869af591b7547e99173085dd9 ""
   "c:/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1699808215 8213030 2d2ab9b09598d4bbc28338e24453e062 ""
   "c:/texlive/2023/texmf.cnf" 1699657109 713 e69b156964470283e0530f5060668171 ""
-  "report-2.aux" 1743608577 1642 11d648e9f844c2324dc96d881ef89193 "pdflatex"
-  "report-2.tex" 1743608574 8808 5275ab4eb52c999500f78e7d11384f81 ""
+  "report-2.aux" 1743617097 1754 77856157dc4773393a4e9e5c1f71796c "pdflatex"
+  "report-2.tex" 1743617094 8844 26361e6e0fe76e9d08edeefe25263a00 ""
   (generated)
   "report-2.aux"
   "report-2.log"
