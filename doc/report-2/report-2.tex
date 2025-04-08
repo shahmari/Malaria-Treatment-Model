@@ -98,12 +98,12 @@ S_M^*=\frac{h+g}{t+h+g},\quad S_T^*=\frac{t}{t+h+g},
 the closed-form symbolic expression for \(R_0\) becomes
 \begin{equation}
     \boxed{%
-    \begin{split}
+    \begin{aligned}
     R_0=\frac{m\,a^2\,b\,c}{r\,g}\Biggl[&\frac{(h+g)\,s_{1M}\,s_{2M}}{(t+h+g)(t+s_{1M}+g)(s_{2M}+g)}\\[1mm]
     &+\frac{t\,s_{1T}\,s_{2T}}{(t+h+g)(s_{1T}+g)(s_{2T}+g)}\\[1mm]
     &+\frac{(h+g)\,t\,s_{1T}\,s_{2T}}{(t+h+g)(t+s_{1M}+g)(s_{1T}+g)(s_{2T}+g)}
     \Biggr].
-    \end{split}
+    \end{aligned}
     }
 \end{equation}
     
@@ -262,6 +262,32 @@ The following results are obtained for the symbolic expressions of the basic rep
     \caption{\(R_0\) vs treatment rates (\(t,h\)) and treatment periods (\(1/t,1/h\)). Results are obtained from the symbolic expressions.}
 \end{figure}
 
-\subsection{Endemic Equilibrium}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\textwidth]{../../fig/R0_STxSM.pdf}
+    \includegraphics[width=0.49\textwidth]{../../fig/R0_STxSM_rev.pdf}
+    \caption{\(R_0\) vs latency rates (\(s_{1M},s_{2M}\)) and treatment rates (\(s_{1T},s_{2T}\)). Results are obtained from the matrix method.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\textwidth]{../../fig/R0_STxSM_zoom.pdf}
+    \includegraphics[width=0.49\textwidth]{../../fig/R0_STxSM_zoom_cut.pdf}
+    \caption{\(R_0\) vs latency rates (\(s_{1M},s_{2M}\)) and $R_0 > 1$ cut. Results are obtained from the symbolic expressions.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\textwidth]{../../fig/Ih_txh.pdf}
+    \includegraphics[width=0.49\textwidth]{../../fig/Ih_txh_rev.pdf}
+    \caption{Endemic equilibrium of infections humans \(I_H^*\) vs treatment rates (\(t,h\)) and treatment periods (\(1/t,1/h\)). Results are obtained from the matrix method.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\textwidth]{../../fig/Ih_STxSM.pdf}
+    \includegraphics[width=0.49\textwidth]{../../fig/Ih_STxSM_rev.pdf}
+    \caption{Endemic equilibrium of infections humans \(I_H^*\) vs latency rates (\(s_{1M},s_{2M}\)) and treatment rates (\(s_{1T},s_{2T}\)). Results are obtained from the matrix method.}
+\end{figure}
 
 \end{document}
