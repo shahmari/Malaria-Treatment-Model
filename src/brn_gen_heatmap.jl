@@ -43,9 +43,9 @@ p.N_LT = 1
 end
 
 txh_PLT = contour(t_range, h_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 txh_rev_PLT = contour(t_range_rev, h_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(txh_PLT, "../fig/gen_model/R0_rates_txh_$(p.N_LM)x$(p.N_LT).png")
 savefig(txh_PLT, "../fig/gen_model/R0_rates_txh_$(p.N_LM)x$(p.N_LT).pdf")
@@ -73,9 +73,9 @@ p.N_LT = 2
 end
 
 txh_PLT = contour(t_range, h_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 txh_rev_PLT = contour(t_range_rev, h_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(txh_PLT, "../fig/gen_model/R0_rates_txh_$(p.N_LM)x$(p.N_LT).png")
 savefig(txh_PLT, "../fig/gen_model/R0_rates_txh_$(p.N_LM)x$(p.N_LT).pdf")
@@ -103,9 +103,9 @@ p.N_LT = 5
 end
 
 txh_PLT = contour(t_range, h_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 txh_rev_PLT = contour(t_range_rev, h_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(txh_PLT, "../fig/gen_model/R0_rates_txh_$(p.N_LM)x$(p.N_LT).png")
 savefig(txh_PLT, "../fig/gen_model/R0_rates_txh_$(p.N_LM)x$(p.N_LT).pdf")
@@ -133,9 +133,9 @@ p.N_LT = 10
 end
 
 txh_PLT = contour(t_range, h_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 txh_rev_PLT = contour(t_range_rev, h_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(txh_PLT, "../fig/gen_model/R0_rates_txh_$(p.N_LM)x$(p.N_LT).png")
 savefig(txh_PLT, "../fig/gen_model/R0_rates_txh_$(p.N_LM)x$(p.N_LT).pdf")
@@ -163,9 +163,9 @@ p.N_LT = 1
 end
 
 SMxST_PLT = contour(SM_range, ST_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 SMxST_rev_PLT = contour(SM_range_rev, ST_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).png")
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).pdf")
@@ -193,9 +193,9 @@ p.N_LT = 2
 end
 
 SMxST_PLT = contour(SM_range, ST_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 SMxST_rev_PLT = contour(SM_range_rev, ST_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).png")
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).pdf")
@@ -223,9 +223,9 @@ p.N_LT = 5
 end
 
 SMxST_PLT = contour(SM_range, ST_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 SMxST_rev_PLT = contour(SM_range_rev, ST_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).png")
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).pdf")
@@ -253,9 +253,9 @@ p.N_LT = 10
 end
 
 SMxST_PLT = contour(SM_range, ST_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 SMxST_rev_PLT = contour(SM_range_rev, ST_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).png")
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).pdf")
@@ -283,9 +283,9 @@ p.N_LT = 50
 end
 
 SMxST_PLT = contour(SM_range, ST_range, R0_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 SMxST_rev_PLT = contour(SM_range_rev, ST_range_rev, R0_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Basic Reproduction Number, " * L"R_0 \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).png")
 savefig(SMxST_PLT, "../fig/gen_model/R0_rates_SMxST_$(p.N_LM)x$(p.N_LT).pdf")
@@ -315,9 +315,9 @@ p.N_LT = 1
 end
 
 IH_PLT = contour(t_range, h_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.5, 1.0), size=(600, 500))
 IH_rev_PLT = contour(t_range_rev, h_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.5, 1.0), size=(600, 500))
 
 savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.N_LM)x$(p.N_LT).png")
 savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.N_LM)x$(p.N_LT).pdf")
@@ -347,9 +347,9 @@ p.N_LT = 2
 end
 
 IH_PLT = contour(t_range, h_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.5, 1.0), size=(600, 500))
 IH_rev_PLT = contour(t_range_rev, h_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.5, 1.0), size=(600, 500))
 
 savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.N_LM)x$(p.N_LT).png")
 savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.N_LM)x$(p.N_LT).pdf")
@@ -379,9 +379,9 @@ p.N_LT = 5
 end
 
 IH_PLT = contour(t_range, h_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.5, 1.0), size=(600, 500))
 IH_rev_PLT = contour(t_range_rev, h_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", size=(600, 500))
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.N_LM), N_{L,T} = %$(p.N_LT))", clims=(0.5, 1.0), size=(600, 500))
 
 savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.N_LM)x$(p.N_LT).png")
 savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.N_LM)x$(p.N_LT).pdf")
@@ -401,7 +401,7 @@ R0_Matrix = zeros(length(N_LM_range), length(N_LT_range))
 end
 
 R0_PLT = contour(N_LM_range, N_LT_range, R0_Matrix, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
-    xlabel="Number of untreated latent stages, " * L"N_{L,M}", ylabel="Number of treated latent stages, " * L"N_{L,T}", title="Basic Reproduction Number, " * L"R_0", size=(600, 500))
+    xlabel="Number of untreated latent stages, " * L"N_{L,M}", ylabel="Number of treated latent stages, " * L"N_{L,T}", title="Basic Reproduction Number, " * L"R_0", clims=(0.0, 13.0), size=(600, 500))
 
 savefig(R0_PLT, "../fig/gen_model/R0_NLMxNLT.png")
 savefig(R0_PLT, "../fig/gen_model/R0_NLMxNLT.pdf")
