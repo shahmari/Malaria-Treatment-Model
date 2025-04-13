@@ -219,3 +219,196 @@ R0_PLT = contour(L_NM_range, L_NT_range, R0_Matrix, c=cgrad(:thermal, rev=true),
 
 savefig(R0_PLT, "../fig/gen_model/R0_NLMxNLT.png")
 savefig(R0_PLT, "../fig/gen_model/R0_NLMxNLT.pdf")
+
+p = default_parameters_gen()
+IH_Matrix_Rates = zeros(500, 500)
+IH_Matrix_Periods = zeros(500, 500)
+t_range = LinRange(0.0, 1.0, 500)
+h_range = LinRange(0.0, 1.0, 500)
+t_range_rev = LinRange(1e-10, 100.0, 500)
+h_range_rev = LinRange(1e-10, 100.0, 500)
+
+p.L_NM = 1
+p.L_NT = 1
+
+@showprogress for i in 1:500, j in 1:500
+    p.h = h_range[i]
+    p.t_rate = t_range[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Rates[i, j] = EE_Solution[2]
+    p.h = 1 / h_range_rev[i]
+    p.t_rate = 1 / t_range_rev[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Periods[i, j] = EE_Solution[2]
+end
+
+IH_PLT = contour(t_range, h_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+IH_rev_PLT = contour(t_range_rev, h_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+
+savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.L_NM)x$(p.L_NT).pdf")
+savefig(IH_rev_PLT, "../fig/gen_model/IH_periods_txh_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_rev_PLT, "../fig/gen_model/IH_periods_txh_$(p.L_NM)x$(p.L_NT).pdf")
+
+p = default_parameters_gen()
+IH_Matrix_Rates = zeros(500, 500)
+IH_Matrix_Periods = zeros(500, 500)
+t_range = LinRange(0.0, 1.0, 500)
+h_range = LinRange(0.0, 1.0, 500)
+t_range_rev = LinRange(1e-10, 100.0, 500)
+h_range_rev = LinRange(1e-10, 100.0, 500)
+
+p.L_NM = 2
+p.L_NT = 2
+
+@showprogress for i in 1:500, j in 1:500
+    p.h = h_range[i]
+    p.t_rate = t_range[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Rates[i, j] = EE_Solution[2]
+    p.h = 1 / h_range_rev[i]
+    p.t_rate = 1 / t_range_rev[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Periods[i, j] = EE_Solution[2]
+end
+
+IH_PLT = contour(t_range, h_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+IH_rev_PLT = contour(t_range_rev, h_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+
+savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.L_NM)x$(p.L_NT).pdf")
+savefig(IH_rev_PLT, "../fig/gen_model/IH_periods_txh_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_rev_PLT, "../fig/gen_model/IH_periods_txh_$(p.L_NM)x$(p.L_NT).pdf")
+
+p = default_parameters_gen()
+IH_Matrix_Rates = zeros(500, 500)
+IH_Matrix_Periods = zeros(500, 500)
+t_range = LinRange(0.0, 1.0, 500)
+h_range = LinRange(0.0, 1.0, 500)
+t_range_rev = LinRange(1e-10, 100.0, 500)
+h_range_rev = LinRange(1e-10, 100.0, 500)
+
+p.L_NM = 4
+p.L_NT = 4
+
+@showprogress for i in 1:500, j in 1:500
+    p.h = h_range[i]
+    p.t_rate = t_range[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Rates[i, j] = EE_Solution[2]
+    p.h = 1 / h_range_rev[i]
+    p.t_rate = 1 / t_range_rev[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Periods[i, j] = EE_Solution[2]
+end
+
+IH_PLT = contour(t_range, h_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Treatment encounter rate, t (day⁻¹)", ylabel="Wane rate, h (day⁻¹)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+IH_rev_PLT = contour(t_range_rev, h_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Treatment encounter period, t⁻¹ (day)", ylabel="Wane period, h⁻¹ (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+
+savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_PLT, "../fig/gen_model/IH_rates_txh_$(p.L_NM)x$(p.L_NT).pdf")
+savefig(IH_rev_PLT, "../fig/gen_model/IH_periods_txh_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_rev_PLT, "../fig/gen_model/IH_periods_txh_$(p.L_NM)x$(p.L_NT).pdf")
+
+
+p = default_parameters_gen()
+IH_Matrix_Rates = zeros(500, 500)
+IH_Matrix_Periods = zeros(500, 500)
+SM_range = LinRange(0.0, 1.0, 500)
+ST_range = LinRange(0.0, 1.0, 500)
+SM_range_rev = LinRange(1e-10, 10.0, 500)
+ST_range_rev = LinRange(1e-10, 10.0, 500)
+
+p.L_NM = 1
+p.L_NT = 1
+
+@showprogress for i in 1:500, j in 1:500
+    p.s_T = ST_range[i]
+    p.s_M = SM_range[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Rates[i, j] = EE_Solution[2]
+    p.s_T = 1 / ST_range_rev[i]
+    p.s_M = 1 / SM_range_rev[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Periods[i, j] = EE_Solution[2]
+end
+
+IH_SMxST_PLT = contour(SM_range, ST_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+IH_SMxST_rev_PLT = contour(SM_range_rev, ST_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+
+savefig(IH_SMxST_PLT, "../fig/gen_model/IH_rates_SMxST_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_SMxST_PLT, "../fig/gen_model/IH_rates_SMxST_$(p.L_NM)x$(p.L_NT).pdf")
+savefig(IH_SMxST_rev_PLT, "../fig/gen_model/IH_periods_SMxST_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_SMxST_rev_PLT, "../fig/gen_model/IH_periods_SMxST_$(p.L_NM)x$(p.L_NT).pdf")
+
+p = default_parameters_gen()
+IH_Matrix_Rates = zeros(500, 500)
+IH_Matrix_Periods = zeros(500, 500)
+SM_range = LinRange(0.0, 1.0, 500)
+ST_range = LinRange(0.0, 1.0, 500)
+SM_range_rev = LinRange(1e-10, 10.0, 500)
+ST_range_rev = LinRange(1e-10, 10.0, 500)
+
+p.L_NM = 2
+p.L_NT = 2
+
+@showprogress for i in 1:500, j in 1:500
+    p.s_T = ST_range[i]
+    p.s_M = SM_range[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Rates[i, j] = EE_Solution[2]
+    p.s_T = 1 / ST_range_rev[i]
+    p.s_M = 1 / SM_range_rev[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Periods[i, j] = EE_Solution[2]
+end
+
+IH_SMxST_PLT = contour(SM_range, ST_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+IH_SMxST_rev_PLT = contour(SM_range_rev, ST_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+
+savefig(IH_SMxST_PLT, "../fig/gen_model/IH_rates_SMxST_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_SMxST_PLT, "../fig/gen_model/IH_rates_SMxST_$(p.L_NM)x$(p.L_NT).pdf")
+savefig(IH_SMxST_rev_PLT, "../fig/gen_model/IH_periods_SMxST_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_SMxST_rev_PLT, "../fig/gen_model/IH_periods_SMxST_$(p.L_NM)x$(p.L_NT).pdf")
+
+p = default_parameters_gen()
+IH_Matrix_Rates = zeros(500, 500)
+IH_Matrix_Periods = zeros(500, 500)
+SM_range = LinRange(0.0, 1.0, 500)
+ST_range = LinRange(0.0, 1.0, 500)
+SM_range_rev = LinRange(1e-10, 10.0, 500)
+ST_range_rev = LinRange(1e-10, 10.0, 500)
+
+p.L_NM = 4
+p.L_NT = 4
+
+@showprogress for i in 1:500, j in 1:500
+    p.s_T = ST_range[i]
+    p.s_M = SM_range[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Rates[i, j] = EE_Solution[2]
+    p.s_T = 1 / ST_range_rev[i]
+    p.s_M = 1 / SM_range_rev[j]
+    EE_Solution = compute_endemic_equilibrium_generalized(p)
+    IH_Matrix_Periods[i, j] = EE_Solution[2]
+end
+
+IH_SMxST_PLT = contour(SM_range, ST_range, IH_Matrix_Rates, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Untreated latency rate, " * L"S_M (day^{-1})", ylabel="Treated latency rate, " * L"S_T (day^{-1})", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+IH_SMxST_rev_PLT = contour(SM_range_rev, ST_range_rev, IH_Matrix_Periods, c=cgrad(:thermal, rev=true), lc=:black, fill=true,
+    xlabel="Untreated latency period, " * L"S_M (day)", ylabel="Treated latency period, " * L"S_T (day)", title="Infectious Humans, " * L"I_H \ (N_{L,M} = %$(p.L_NM), N_{L,T} = %$(p.L_NT))", size=(600, 500))
+
+savefig(IH_SMxST_PLT, "../fig/gen_model/IH_rates_SMxST_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_SMxST_PLT, "../fig/gen_model/IH_rates_SMxST_$(p.L_NM)x$(p.L_NT).pdf")
+savefig(IH_SMxST_rev_PLT, "../fig/gen_model/IH_periods_SMxST_$(p.L_NM)x$(p.L_NT).png")
+savefig(IH_SMxST_rev_PLT, "../fig/gen_model/IH_periods_SMxST_$(p.L_NM)x$(p.L_NT).pdf")
