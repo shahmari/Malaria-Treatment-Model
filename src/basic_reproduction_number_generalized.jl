@@ -31,7 +31,7 @@ function compute_dfe_generalized(p::Parameters)
     #     [ -(t_rate+g)   h     ] [ S*_M ] = [ -g ]
     #     [  t_rate    -(h+g)  ] [ S*_T ]   [  0 ]
     A = [-(p.t_rate + p.g) p.h;
-        p.t_rate -(p.h + p.g)]
+         p.t_rate         -(p.h + p.g)]
     b_vec = [-p.g, 0.0]
     S_M, S_T = A \ b_vec
 
@@ -80,9 +80,9 @@ function compute_R0_generalized(p::Parameters; analytical_method::Bool=true)
     idx_E_T_start = idx_I_M + 1
     idx_I_T = idx_E_T_start + p.L_NT  # infectious treated mosquito compartment
 
-    # Per-stage progression rates:
-    s_M_stage = p.s_M / p.L_NM
-    s_T_stage = p.s_T / p.L_NT
+    # Per-stage progression rates (updated):
+    s_M_stage = p.s_M * p.L_NM
+    s_T_stage = p.s_T * p.L_NT
 
     # --- Construct the F matrix (new infections) ---
     # New infections in humans from infectious mosquitoes:
@@ -143,11 +143,11 @@ function compute_endemic_equilibrium_generalized(p::Parameters; tol=1e-8)
         D = p.a * p.c * I_H
         S_M = p.g / (D + p.t_rate + p.g - (p.h * p.t_rate) / (D + p.h + p.g))
         S_T = p.t_rate * S_M / (D + p.h + p.g)
-        s_M_stage = p.s_M / p.L_NM
+        s_M_stage = p.s_M * p.L_NM  # updated multiplication
         E1M = (p.a * p.c * I_H * S_M) / (p.t_rate + s_M_stage + p.g)
         multiplier_M = s_M_stage / (s_M_stage + p.g)
         I_M = (s_M_stage / p.g) * (multiplier_M)^(p.L_NM - 1) * E1M
-        s_T_stage = p.s_T / p.L_NT
+        s_T_stage = p.s_T * p.L_NT  # updated multiplication
         E1T = (p.a * p.c * I_H * S_T + p.t_rate * E1M) / (s_T_stage + p.g)
         multiplier_T = s_T_stage / (s_T_stage + p.g)
         I_T = (s_T_stage / p.g) * (multiplier_T)^(p.L_NT - 1) * E1T
@@ -158,7 +158,6 @@ function compute_endemic_equilibrium_generalized(p::Parameters; tol=1e-8)
     # f(I_H) = I_H/(1-I_H) - m*a*b*(I_M+I_T)/r.
     function consistency(I_H)
         comps = mosquito_components(I_H)
-        # Explicitly index the tuple:
         I_M = comps[4]
         I_T = comps[6]
         return I_H / (1 - I_H) - p.m * p.a * p.b * (I_M + I_T) / p.r
@@ -171,7 +170,6 @@ function compute_endemic_equilibrium_generalized(p::Parameters; tol=1e-8)
     if fa * fb < 0
         I_H_sol = find_zero(consistency, (a, b); atol=tol)
     else
-        # Fall back to using an initial guess if the bracket does not work.
         I_H_sol = find_zero(consistency, 0.01; atol=tol)
     end
 
@@ -181,7 +179,7 @@ function compute_endemic_equilibrium_generalized(p::Parameters; tol=1e-8)
     S_M, S_T, E1M, I_M, E1T, I_T = comps
 
     # Compute latent compartments for untreated mosquitoes.
-    s_M_stage = p.s_M / p.L_NM
+    s_M_stage = p.s_M * p.L_NM  # updated multiplication
     E_M = zeros(p.L_NM)
     E_M[1] = E1M
     for i in 2:p.L_NM
@@ -189,7 +187,7 @@ function compute_endemic_equilibrium_generalized(p::Parameters; tol=1e-8)
     end
 
     # Compute latent compartments for treated mosquitoes.
-    s_T_stage = p.s_T / p.L_NT
+    s_T_stage = p.s_T * p.L_NT  # updated multiplication
     E_T = zeros(p.L_NT)
     E_T[1] = E1T
     for i in 2:p.L_NT
@@ -197,7 +195,7 @@ function compute_endemic_equilibrium_generalized(p::Parameters; tol=1e-8)
     end
 
     # Assemble the full state vector.
-    # Order: [S_H, I_H, S_M, E_M(1)...E_M(p.L_NM), I_M, S_T, E_T(1)...E_T(p.L_NT), I_T]
+    # Order: [S_H, I_H, S_M, E_M(1)...E_M(L_NM), I_M, S_T, E_T(1)...E_T(L_NT), I_T]
     n = 2 + (1 + p.L_NM + 1) + (1 + p.L_NT + 1)
     eq = zeros(n)
     eq[1] = S_H
@@ -223,7 +221,7 @@ using DifferentialEquations
 
 # The generalized ODE system for the malaria model.
 # State vector order:
-# [ S_H, I_H, S_M, E₁ᴹ, …, Eₗᴹ, I_M, S_T, E₁ᵀ, …, Eₗᵀ, I_T ],
+# [ S_H, I_H, S_M, E₁ᴹ, …, E_L_NMᴹ, I_M, S_T, E₁ᵀ, …, E_L_NTᵀ, I_T ],
 # where L = L_NM for untreated and L = L_NT for treated mosquitoes.
 function generalized_ode!(du, u, p::Parameters, t)
     # Humans
@@ -244,9 +242,9 @@ function generalized_ode!(du, u, p::Parameters, t)
     I_M = u[idx_IM]
     I_T = u[idx_IT]
 
-    # Per-stage progression rates.
-    s_M_stage = p.s_M / p.L_NM
-    s_T_stage = p.s_T / p.L_NT
+    # Per-stage progression rates (updated):
+    s_M_stage = p.s_M * p.L_NM
+    s_T_stage = p.s_T * p.L_NT
 
     # -----------------------------
     # Human (SIS) dynamics:
@@ -313,7 +311,6 @@ function compute_ee_numerical_generalized(p::Parameters; NLasts::Integer=100, δ
         Slopes = map(eachrow(M)) do row
             N = length(row)
             X = collect(1:N)
-            # Compute the slope: Cov(X, row) / Var(X)
             m_val = cov(X, row) / var(X)
             m_val
         end
