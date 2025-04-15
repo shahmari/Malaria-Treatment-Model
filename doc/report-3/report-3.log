@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.12)  13 APR 2025 21:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.12)  15 APR 2025 01:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -243,131 +243,131 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <../../fig/gen_model/R0_rates_txh_1x1.pdf, id=26, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_rates_txh_1x1.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_rates_txh_1x1.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_rates_txh_1x1.pdf  used on input line 144.
+Package pdftex.def Info: ../../fig/gen_model/R0_rates_txh_1x1.pdf  used on input line 141.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_periods_txh_1x1.pdf, id=27, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_periods_txh_1x1.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_periods_txh_1x1.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_periods_txh_1x1.pdf  used on input line 145.
+Package pdftex.def Info: ../../fig/gen_model/R0_periods_txh_1x1.pdf  used on input line 142.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_rates_txh_2x2.pdf, id=28, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_rates_txh_2x2.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_rates_txh_2x2.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_rates_txh_2x2.pdf  used on input line 146.
+Package pdftex.def Info: ../../fig/gen_model/R0_rates_txh_2x2.pdf  used on input line 143.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_periods_txh_2x2.pdf, id=29, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_periods_txh_2x2.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_periods_txh_2x2.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_periods_txh_2x2.pdf  used on input line 147.
+Package pdftex.def Info: ../../fig/gen_model/R0_periods_txh_2x2.pdf  used on input line 144.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_rates_txh_4x4.pdf, id=30, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_rates_txh_4x4.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_rates_txh_4x4.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_rates_txh_4x4.pdf  used on input line 148.
+Package pdftex.def Info: ../../fig/gen_model/R0_rates_txh_4x4.pdf  used on input line 145.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_periods_txh_4x4.pdf, id=31, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_periods_txh_4x4.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_periods_txh_4x4.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_periods_txh_4x4.pdf  used on input line 149.
+Package pdftex.def Info: ../../fig/gen_model/R0_periods_txh_4x4.pdf  used on input line 146.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
  [4]
 <../../fig/gen_model/R0_rates_SMxST_1x1.pdf, id=35, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_rates_SMxST_1x1.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_rates_SMxST_1x1.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_rates_SMxST_1x1.pdf  used on input line 155.
+Package pdftex.def Info: ../../fig/gen_model/R0_rates_SMxST_1x1.pdf  used on input line 152.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_periods_SMxST_1x1.pdf, id=36, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_periods_SMxST_1x1.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_periods_SMxST_1x1.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_periods_SMxST_1x1.pdf  used on input line 156.
+Package pdftex.def Info: ../../fig/gen_model/R0_periods_SMxST_1x1.pdf  used on input line 153.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_rates_SMxST_2x2.pdf, id=37, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_rates_SMxST_2x2.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_rates_SMxST_2x2.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_rates_SMxST_2x2.pdf  used on input line 157.
+Package pdftex.def Info: ../../fig/gen_model/R0_rates_SMxST_2x2.pdf  used on input line 154.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_periods_SMxST_2x2.pdf, id=38, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_periods_SMxST_2x2.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_periods_SMxST_2x2.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_periods_SMxST_2x2.pdf  used on input line 158.
+Package pdftex.def Info: ../../fig/gen_model/R0_periods_SMxST_2x2.pdf  used on input line 155.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_rates_SMxST_4x4.pdf, id=39, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_rates_SMxST_4x4.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_rates_SMxST_4x4.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_rates_SMxST_4x4.pdf  used on input line 159.
+Package pdftex.def Info: ../../fig/gen_model/R0_rates_SMxST_4x4.pdf  used on input line 156.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/R0_periods_SMxST_4x4.pdf, id=40, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_periods_SMxST_4x4.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_periods_SMxST_4x4.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_periods_SMxST_4x4.pdf  used on input line 160.
+Package pdftex.def Info: ../../fig/gen_model/R0_periods_SMxST_4x4.pdf  used on input line 157.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
  [5 <../../fig/gen_model/R0_rates_txh_1x1.pdf> <../../fig/gen_model/R0_periods_txh_1x1.pdf> <../../fig/gen_model/R0_rates_txh_2x2.pdf> <../../fig/gen_model/R0_periods_txh_2x2.pdf> <../../fig/gen_model/R0_rates_txh_4x4.pdf> <../../fig/gen_model/R0_periods_txh_4x4.pdf>]
 <../../fig/gen_model/R0_NLMxNLT.pdf, id=50, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/R0_NLMxNLT.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/R0_NLMxNLT.pdf>
-Package pdftex.def Info: ../../fig/gen_model/R0_NLMxNLT.pdf  used on input line 166.
+Package pdftex.def Info: ../../fig/gen_model/R0_NLMxNLT.pdf  used on input line 163.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
  [6 <../../fig/gen_model/R0_rates_SMxST_1x1.pdf> <../../fig/gen_model/R0_periods_SMxST_1x1.pdf> <../../fig/gen_model/R0_rates_SMxST_2x2.pdf> <../../fig/gen_model/R0_periods_SMxST_2x2.pdf> <../../fig/gen_model/R0_rates_SMxST_4x4.pdf> <../../fig/gen_model/R0_periods_SMxST_4x4.pdf>]
 <../../fig/gen_model/IH_rates_txh_1x1.pdf, id=60, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_rates_txh_1x1.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_rates_txh_1x1.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_rates_txh_1x1.pdf  used on input line 174.
+Package pdftex.def Info: ../../fig/gen_model/IH_rates_txh_1x1.pdf  used on input line 171.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_periods_txh_1x1.pdf, id=61, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_periods_txh_1x1.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_periods_txh_1x1.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_periods_txh_1x1.pdf  used on input line 175.
+Package pdftex.def Info: ../../fig/gen_model/IH_periods_txh_1x1.pdf  used on input line 172.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_rates_txh_2x2.pdf, id=62, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_rates_txh_2x2.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_rates_txh_2x2.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_rates_txh_2x2.pdf  used on input line 176.
+Package pdftex.def Info: ../../fig/gen_model/IH_rates_txh_2x2.pdf  used on input line 173.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_periods_txh_2x2.pdf, id=63, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_periods_txh_2x2.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_periods_txh_2x2.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_periods_txh_2x2.pdf  used on input line 177.
+Package pdftex.def Info: ../../fig/gen_model/IH_periods_txh_2x2.pdf  used on input line 174.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_rates_txh_4x4.pdf, id=64, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_rates_txh_4x4.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_rates_txh_4x4.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_rates_txh_4x4.pdf  used on input line 178.
+Package pdftex.def Info: ../../fig/gen_model/IH_rates_txh_4x4.pdf  used on input line 175.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_periods_txh_4x4.pdf, id=65, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_periods_txh_4x4.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_periods_txh_4x4.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_periods_txh_4x4.pdf  used on input line 179.
+Package pdftex.def Info: ../../fig/gen_model/IH_periods_txh_4x4.pdf  used on input line 176.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
  [7 <../../fig/gen_model/R0_NLMxNLT.pdf>]
 <../../fig/gen_model/IH_rates_SMxST_1x1.pdf, id=71, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_rates_SMxST_1x1.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_rates_SMxST_1x1.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_rates_SMxST_1x1.pdf  used on input line 185.
+Package pdftex.def Info: ../../fig/gen_model/IH_rates_SMxST_1x1.pdf  used on input line 182.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_periods_SMxST_1x1.pdf, id=72, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_periods_SMxST_1x1.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_periods_SMxST_1x1.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_periods_SMxST_1x1.pdf  used on input line 186.
+Package pdftex.def Info: ../../fig/gen_model/IH_periods_SMxST_1x1.pdf  used on input line 183.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_rates_SMxST_2x2.pdf, id=73, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_rates_SMxST_2x2.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_rates_SMxST_2x2.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_rates_SMxST_2x2.pdf  used on input line 187.
+Package pdftex.def Info: ../../fig/gen_model/IH_rates_SMxST_2x2.pdf  used on input line 184.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_periods_SMxST_2x2.pdf, id=74, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_periods_SMxST_2x2.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_periods_SMxST_2x2.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_periods_SMxST_2x2.pdf  used on input line 188.
+Package pdftex.def Info: ../../fig/gen_model/IH_periods_SMxST_2x2.pdf  used on input line 185.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_rates_SMxST_4x4.pdf, id=75, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_rates_SMxST_4x4.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_rates_SMxST_4x4.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_rates_SMxST_4x4.pdf  used on input line 189.
+Package pdftex.def Info: ../../fig/gen_model/IH_rates_SMxST_4x4.pdf  used on input line 186.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
 <../../fig/gen_model/IH_periods_SMxST_4x4.pdf, id=76, 602.25pt x 501.875pt>
 File: ../../fig/gen_model/IH_periods_SMxST_4x4.pdf Graphic file (type pdf)
 <use ../../fig/gen_model/IH_periods_SMxST_4x4.pdf>
-Package pdftex.def Info: ../../fig/gen_model/IH_periods_SMxST_4x4.pdf  used on input line 190.
+Package pdftex.def Info: ../../fig/gen_model/IH_periods_SMxST_4x4.pdf  used on input line 187.
 (pdftex.def)             Requested size: 171.99922pt x 143.33452pt.
  [8 <../../fig/gen_model/IH_rates_txh_1x1.pdf> <../../fig/gen_model/IH_periods_txh_1x1.pdf> <../../fig/gen_model/IH_rates_txh_2x2.pdf> <../../fig/gen_model/IH_periods_txh_2x2.pdf> <../../fig/gen_model/IH_rates_txh_4x4.pdf> <../../fig/gen_model/IH_periods_txh_4x4.pdf>] [9 <../../fig/gen_model/IH_rates_SMxST_1x1.pdf> <../../fig/gen_model/IH_periods_SMxST_1x1.pdf> <../../fig/gen_model/IH_rates_SMxST_2x2.pdf> <../../fig/gen_model/IH_periods_SMxST_2x2.pdf> <../../fig/gen_model/IH_rates_SMxST_4x4.pdf> <../../fig/gen_model/IH_periods_SMxST_4x4.pdf>] (./report-3.aux)
  ***********
@@ -382,9 +382,9 @@ Here is how much of TeX's memory you used:
  25733 multiletter control sequences out of 15000+600000
  571201 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,10n,65p,916b,235s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,12n,65p,916b,235s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on report-3.pdf (9 pages, 3033199 bytes).
+Output written on report-3.pdf (9 pages, 3028809 bytes).
 PDF statistics:
  155 PDF objects out of 1000 (max. 8388607)
  90 compressed objects within 1 object stream

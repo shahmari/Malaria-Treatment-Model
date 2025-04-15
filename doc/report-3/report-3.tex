@@ -18,7 +18,7 @@ This report presents a generalized malaria transmission model extending the Ross
 
 \section{Introduction}
 
-Classical malaria transmission models typically adopt a Ross-Macdonald structure with a fixed number of latent stages in mosquito populations, often assuming exponential or Erlang-distributed latent periods via two compartments. To generalize this framework and better capture variability in mosquito latency, we extend the model to support arbitrary numbers of latent stages in both treated and untreated mosquito subpopulations. The per-stage progression rates are adjusted accordingly so that the total latency duration follows an Erlang distribution with a fixed mean.
+Classical malaria transmission models typically adopt a Ross-Macdonald structure with a fixed number of latent stages in mosquito populations, often assuming exponential or Erlang-distributed latent periods via two compartments. To generalize this framework and better capture variability in mosquito latency, we extend the model to support arbitrary numbers of latent stages in both treated and untreated mosquito subpopulations. The per-stage progression rates are now adjusted by multiplying the total rate with the number of stages so that the overall mean latent period remains constant.
 
 This generalization allows investigation into how the shape of the latent period distribution affects key epidemiological quantities such as the basic reproduction number \(R_0\) and the endemic equilibrium.
 
@@ -48,7 +48,7 @@ The numbers \(L_{NM}\) and \(L_{NT}\) represent the number of latent stages for 
 At the DFE, \(I_H = 0\) and all infected mosquito compartments are zero. The susceptible mosquito compartments are determined by solving:
 \[
 \begin{pmatrix}
--(t + g) & h \\
+-(t+g) & h \\
 t & -(h+g)
 \end{pmatrix}
 \begin{pmatrix}
@@ -57,39 +57,39 @@ S_M^* \\ S_T^*
 =
 \begin{pmatrix}
 -g \\ 0
-\end{pmatrix}
+\end{pmatrix},
 \]
 yielding the equilibrium values \(S_M^*\) and \(S_T^*\).
 
 \subsection{Generalized ODE System}
 
-The dynamics are governed by the following ODEs:
+The dynamics are governed by the following ODEs.
 
 \paragraph{Humans (SIS):}
 \begin{align*}
-\frac{dS_H}{dt} &= -m a b (I_M + I_T) S_H + r I_H, \\
-\frac{dI_H}{dt} &= m a b (I_M + I_T) S_H - r I_H.
+\frac{dS_H}{dt} &= -mab\,(I_M + I_T)\,S_H + r\,I_H, \\
+\frac{dI_H}{dt} &= mab\,(I_M + I_T)\,S_H - r\,I_H.
 \end{align*}
 
 \paragraph{Untreated Mosquitoes:}
 \begin{align*}
-\frac{dS_M}{dt} &= g + h S_T - a c I_H S_M - t S_M - g S_M, \\
-\frac{dE_{1,M}}{dt} &= a c I_H S_M - (t + s_M/L_{NM} + g) E_{1,M}, \\
-\frac{dE_{i,M}}{dt} &= \frac{s_M}{L_{NM}} E_{i-1,M} - \left(\frac{s_M}{L_{NM}} + g \right) E_{i,M}, \quad i=2,\dots,L_{NM}, \\
-\frac{dI_M}{dt} &= \frac{s_M}{L_{NM}} E_{L_{NM},M} - g I_M.
+\frac{dS_M}{dt} &= g + h\,S_T - ac\,I_H\,S_M - tS_M - gS_M, \\
+\frac{dE_{1,M}}{dt} &= ac\,I_H\,S_M - \Big(t + s_M \,L_{NM} + g\Big)E_{1,M}, \\
+\frac{dE_{i,M}}{dt} &= s_M \,L_{NM}\,E_{i-1,M} - \Big(s_M\,L_{NM} + g\Big)E_{i,M}, \quad i=2,\dots,L_{NM}, \\
+\frac{dI_M}{dt} &= s_M \,L_{NM}\,E_{L_{NM},M} - g\,I_M.
 \end{align*}
 
 \paragraph{Treated Mosquitoes:}
 \begin{align*}
-\frac{dS_T}{dt} &= t S_M - a c I_H S_T - h S_T - g S_T, \\
-\frac{dE_{1,T}}{dt} &= a c I_H S_T + t E_{1,M} - \left(\frac{s_T}{L_{NT}} + g\right) E_{1,T}, \\
-\frac{dE_{i,T}}{dt} &= \frac{s_T}{L_{NT}} E_{i-1,T} - \left(\frac{s_T}{L_{NT}} + g \right) E_{i,T}, \quad i=2,\dots,L_{NT}, \\
-\frac{dI_T}{dt} &= \frac{s_T}{L_{NT}} E_{L_{NT},T} - g I_T.
+\frac{dS_T}{dt} &= tS_M - ac\,I_H\,S_T - hS_T - gS_T, \\
+\frac{dE_{1,T}}{dt} &= ac\,I_H\,S_T + t\,E_{1,M} - \Big(s_T\,L_{NT} + g\Big)E_{1,T}, \\
+\frac{dE_{i,T}}{dt} &= s_T\,L_{NT}\,E_{i-1,T} - \Big(s_T\,L_{NT} + g\Big)E_{i,T}, \quad i=2,\dots,L_{NT}, \\
+\frac{dI_T}{dt} &= s_T\,L_{NT}\,E_{L_{NT},T} - g\,I_T.
 \end{align*}
 
 \section{Basic Reproduction Number \(\mathbf{R_0}\)}
 
-The Next Generation Matrix (NGM) method is used to compute \(R_0\). The infected state vector is:
+The Next Generation Matrix (NGM) method is used to compute \(R_0\). The infected state vector is defined as
 \[
 \mathbf{x} = \begin{bmatrix}
 I_H,\, E_{1,M},\, \dots,\, E_{L_{NM},M},\, I_M,\, E_{1,T},\, \dots,\, E_{L_{NT},T},\, I_T
@@ -98,42 +98,39 @@ I_H,\, E_{1,M},\, \dots,\, E_{L_{NM},M},\, I_M,\, E_{1,T},\, \dots,\, E_{L_{NT},
 
 \subsection{F and V Matrices}
 
-The matrices \(\mathbf{F}\) and \(\mathbf{V}\) represent new infections and transitions respectively.
+The matrices \(\mathbf{F}\) and \(\mathbf{V}\) represent, respectively, new infections and transitions between infected compartments.
 
-New infections arise via:
+New infections arise from:
 \begin{itemize}
-    \item From mosquitoes to humans.
-    \item From humans to mosquitoes (first latent stage).
+    \item Transmission from infectious mosquitoes to humans.
+    \item Transmission from infectious humans to the first latent compartments in both untreated and treated branches.
 \end{itemize}
 
-Transitions (in \(\mathbf{V}\)) include:
-\begin{itemize}
-    \item Recovery, death, progression through latent stages, treatment transfer, etc.
-\end{itemize}
+Transitions (in \(\mathbf{V}\)) include recovery, death, progression through latent stages (with per-stage progression rates now \(s_M \, L_{NM}\) or \(s_T \, L_{NT}\)), and treatment transfer.
 
 The NGM is:
 \[
-\mathbf{NGM} = \mathbf{F} \mathbf{V}^{-1}
+\mathbf{NGM} = \mathbf{F}\,\mathbf{V}^{-1},
 \]
-and
+and the basic reproduction number is given by:
 \[
 R_0 = \rho(\mathbf{NGM}),
 \]
-where \(\rho\) is the spectral radius.
+where \(\rho\) denotes the spectral radius.
 
 \section{Endemic Equilibrium Calculation}
 
 \subsection{Analytical Approximation}
 
-We derive closed-form expressions for mosquito compartments at endemic equilibrium as functions of \(I_H\), then numerically solve a consistency equation:
+Analytical expressions for mosquito compartments at endemic equilibrium are derived as functions of \(I_H\), based on the steady-state balance of flows. A consistency equation is then formed:
 \[
-\frac{I_H}{1-I_H} = \frac{m a b (I_M(I_H) + I_T(I_H))}{r}
+\frac{I_H}{1-I_H} = \frac{m\,a\,b\,\bigl(I_M(I_H)+I_T(I_H)\bigr)}{r},
 \]
-to find \(I_H^*\). The other equilibrium values follow directly.
+which is solved numerically for \(I_H^*\). Other compartmental values then follow directly.
 
 \subsection{Numerical ODE Integration}
 
-An alternative numerical approach perturbs the DFE by seeding a small infection and iteratively integrates the ODE system. Convergence is assessed by fitting a linear regression to the last \(N\) solution values for each state variable and halting when all slopes fall below a tolerance.
+Alternatively, the endemic equilibrium can be obtained by perturbing the DFE (by seeding a small infection) and iteratively integrating the ODE system. Convergence is assessed by fitting linear regressions to the last \(N\) iterates of the state variables. When the slopes fall below a specified tolerance, the average of the final set of iterates is taken as the endemic equilibrium.
 
 \section{Results}
 
