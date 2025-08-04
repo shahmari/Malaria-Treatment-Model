@@ -142,7 +142,7 @@ function compute_R0_closed_form(par::Parameters)
     # Baseline R0 without treatment
     R0_bar = P * m * a^2 * b * c / (g * r)
     # Probability of acquiring treatment during latency (two stages): rate εpa over total exit rate
-    pi_T = ε * p * a / (ε * p * a + s1M + s2M + g)
+    pi_T = ε * p * a / (ε * p * a + s1M + g)
     # Survival probability through 2-stage treated latency
     P_T = (s1T / (s1T + g)) * (s2T / (s2T + g))
     # Factor phi_T = relative survival under treatment vs untreated
@@ -150,7 +150,7 @@ function compute_R0_closed_form(par::Parameters)
     # DFE susceptible untreated mosquito fraction
     SM = compute_dfe_closed_form(par).SM
     # Combine according to Eq.(treated_R0)
-    return ((1 - pi_T) + phi_T * pi_T) * (1 - p)^2 * SM * R0_bar
+    return (((1 - pi_T) + phi_T * pi_T) * (1 - p)^2 * SM * R0_bar)
 end
 
 """
