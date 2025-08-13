@@ -161,68 +161,6 @@ function compute_R0_closed_form(par::Parameters)
 end
 
 """
-Compute the endemic equilibrium (EE) analytically by solving for I_H.
-Returns NamedTuple of same form as compute_dfe, or nothing if R0 ≤ 1.
-"""
-function compute_endemic_equilibrium(par::Parameters)
-    # R0 = compute_R0(par)
-    # if R0 ≤ 1
-    #     return nothing
-    # end
-    a = par.a; b = par.b; c = par.c; m = par.m;
-    r = par.r; g = par.g; h1 = par.h1; h2 = par.h2;
-    ε = par.ε; p = par.p; s1M = par.s1M; L = par.L;
-    s2M = par.s2M; s1T = par.s1T; s2T = par.s2T;
-    
-    # Compute the endemic equilibrium
-    function g!(G, vars)
-        SM, S2T = vars
-        S1T = ε * p * a * (SM + S2T) / (h1 + g)
-        G[1] = g + h2 * S2T - (((1 - p) * a * c * IH) + ε * p * a + g) * SM
-        G[2] = h1 * S1T - ((ε * p * a * S2T + h2 + g) * S2T)
-    end
-    function f_IH(IH)
-        function g!(G, vars)
-            SM, S2T = vars
-            S1T = ε * p * a * (SM + S2T) / (h1 + g)
-            G[1] = g + h2 * S2T - (((1 - p) * a * c * IH) + ε * p * a + g) * SM
-            G[2] = h1 * S1T - ((ε * p * a * S2T + h2 + g) * S2T)
-        end
-        sol = nlsolve(g!, [par.g, 0.0])
-        SM, S2T = sol.zero
-        E1M = (1 - p) * a * c * IH * SM / (ε * p * a + L * s1M + g)
-        E2M = L * s1M * E1M / (L * s2M + g)
-        IM = L * s2M * E2M / g
-        E1T = ε * p * a * E1M / (L * s1T + g)
-        E2T = L * s1T * E1T / (L * s2T + g)
-        IT = L * s2T * E2T / g
-        return m * (1 - p) * a * b * (IM + IT) * (1 - IH) - r * IH
-    end
-    lo, hi = 1e-6, 1 - 1e-6
-    for _ in 1:50
-        mid = (lo + hi) / 2
-        if f_IH(mid) > 0
-            hi = mid
-        else
-            lo = mid
-        end
-    end
-    IH = (lo + hi) / 2
-    SH = 1 - IH
-    sol = nlsolve((G, v) -> g!(G, v), [par.g, 0.0])
-    SM, S2T = sol.zero
-    S1T = ε * p * a * (SM + S2T) / (h1 + g)
-    E1M = (1 - p) * a * c * IH * SM / (ε * p * a + L * s1M + g)
-    E2M = L * s1M * E1M / (L * s2M + g)
-    IM = L * s2M * E2M / g
-    E1T = ε * p * a * E1M / (L * s1T + g)
-    E2T = L * s1T * E1T / (L * s2T + g)
-    IT = L * s2T * E2T / g
-    return (SH=SH, IH=IH, SM=SM, E1M=E1M, E2M=E2M, IM=IM,
-        S1T=S1T, S2T=S2T, E1T=E1T, E2T=E2T, IT=IT)
-end
-
-"""
 ODE system for numerical integration of the full model.
 State vector: [SH,...,IT]
 """
@@ -248,33 +186,82 @@ function malaria_ode!(du, u, par::Parameters, t)
 end
 
 """
-Numerically compute the endemic equilibrium by integrating until convergence.
+Compute the endemic equilibrium numerically by solving the steady-state subsystem.
+Returns a NamedTuple with fields:
+  :SH, :IH,
+  :SM, :E1M, :E2M, :IM,
+  :S1T, :S2T, :E1T, :E2T, :IT
 """
-function compute_ee_numerical(par::Parameters;
-    u0=[0.99, 1e-3, 1.0, zeros(9)...],
-    tspan=(0.0, 1.0),
-    Nlast=100, tol=1e-6)
-    buf = Vector{Vector{Float64}}()
-    cur = copy(u0)
-    for _ in 1:Nlast
-        sol = solve(ODEProblem(malaria_ode!, cur, tspan, par), RK4())
-        cur = sol.u[end]
-        push!(buf, deepcopy(cur))
+
+function compute_endemic_equilibrium(par::Parameters)
+    # 1) Unpack exactly as your code does:
+    a  = par.a;  b  = par.b;  c  = par.c;  m  = par.m
+    r  = par.r;  g  = par.g;  h1 = par.h1; h2 = par.h2
+    ε  = par.ε;  p  = par.p;  s1M = par.s1M; L  = par.L
+    s2M = par.s2M; s1T = par.s1T; s2T = par.s2T
+
+    # 2) Define Erlang‐adjusted per‐stage rates:
+    λ1M = L * s1M
+    λ2M = L * s2M
+    λ1T = L * s1T
+    λ2T = L * s2T
+    τ   = ε * p * a  # diversion rate
+
+    # 3) Build a 3‐equation residual for [SM, S2T, IH]
+    function resid!(F, x)
+        SM, S2T, IH = x
+
+        # treated susceptibles
+        S1T = τ * (SM + S2T) / (h1 + g)
+
+        # untreated branch at equilibrium
+        E1M = (1-p)*a*c*IH*SM / (τ + λ1M + g)
+        E2M = λ1M * E1M / (λ2M + g)
+        IM  = λ2M * E2M / g
+
+        # treated branch at equilibrium
+        E1T = τ * E1M / (λ1T + g)
+        E2T = λ1T * E1T / (λ2T + g)
+        IT  = λ2T * E2T / g
+
+        # 1) dSM/dt = 0:
+        #    g + h2*S2T - [ (1-p)a c IH + τ + g ]*SM = 0
+        F[1] = g + h2 * S2T - ((1-p)*a*c*IH + τ + g) * SM
+
+        # 2) dS2T/dt = 0:
+        #    h1*S1T - [ τ*S2T + h2 + g ]*S2T = 0
+        F[2] = h1 * S1T - ((τ * S2T + h2 + g) * S2T)
+
+        # 3) dIH/dt = 0:
+        #    m(1-p)a b (IM+IT)*(1-IH) - r IH = 0
+        F[3] = m*(1-p)*a*b*(IM + IT)*(1 - IH) - r * IH
     end
-    while true
-        M = hcat(buf...)
-        slopes = map(eachrow(M)) do row
-            cov(collect(1:length(row)), row) / var(row)
-        end
-        if all(abs.(slopes) .< tol)
-            break
-        end
-        sol = solve(ODEProblem(malaria_ode!, cur, tspan, par), RK4())
-        cur = sol.u[end]
-        popfirst!(buf)
-        push!(buf, deepcopy(cur))
-    end
-    return vec(mean(hcat(buf...); dims=2))
+
+    # 4) Initial guess: start from DFE for SM, zero for S2T, tiny IH
+    dfe = compute_dfe_closed_form(par)
+    guess = [dfe.SM, 0.0, 1.0]
+
+    sol = nlsolve(resid!, guess; ftol=1e-10, xtol=1e-10)
+    @assert converged(sol) "Endemic-equilibrium solver failed to converge"
+
+    SM, S2T, IH = sol.zero
+    SH = 1 - IH
+
+    # 5) Reconstruct all other compartments
+    S1T = τ * (SM + S2T) / (h1 + g)
+    E1M = (1-p)*a*c*IH*SM / (τ + λ1M + g)
+    E2M = λ1M * E1M / (λ2M + g)
+    IM  = λ2M * E2M / g
+
+    E1T = τ * E1M / (λ1T + g)
+    E2T = λ1T * E1T / (λ2T + g)
+    IT  = λ2T * E2T / g
+
+    return (
+        SH=SH, IH=IH,
+        SM=SM, E1M=E1M, E2M=E2M, IM=IM,
+        S1T=S1T, S2T=S2T, E1T=E1T, E2T=E2T, IT=IT
+    )
 end
 
 end # module

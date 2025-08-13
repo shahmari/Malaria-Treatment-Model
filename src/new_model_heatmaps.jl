@@ -1,5 +1,8 @@
 using DifferentialEquations, LinearAlgebra, Plots, Plots.Measures, ProgressMeter, LaTeXStrings
 
+Plots.default(titlefontsize=16, tickfontsize=14, labelfontsize=16, legendfontsize=10, rightmargin=5mm,
+    fontfamily="Sans-serif", frame=:box, label=nothing)
+
 cd(dirname(@__FILE__)) # Changing the current directory to the directory of the file
 
 include("basic_reproduction_number_new_model.jl")
