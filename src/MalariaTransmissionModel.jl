@@ -275,7 +275,7 @@ function compute_endemic_equilibrium(params::ModelParameters, p::Float64, epsilo
 
     # Initial guess: DFE for SM, zero for S2T, tiny IH
     dfe = compute_dfe(params, p, epsilon)
-    guess = [dfe.S_M, 0.0, 1e-6]
+    guess = [dfe.S_M, 0.0, 1.0]
 
     sol = nlsolve(resid!, guess; ftol=1e-10, xtol=1e-10)
     if !converged(sol)
