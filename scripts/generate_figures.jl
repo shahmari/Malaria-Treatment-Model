@@ -18,10 +18,9 @@ using Pkg
 Pkg.activate("..")
 
 # Load the necessary packages.
-using Plots
+using Plots, Plots.Measures
 using LaTeXStrings # For using LaTeX formatting in plot labels
 using DifferentialEquations
-using Printf
 
 # Load the core model logic from the `src` directory.
 include("../src/MalariaTransmissionModel.jl")
@@ -51,14 +50,14 @@ default(
     tickfontsize=10,
     legendfontsize=10,
     framestyle=:box,
+    label=nothing,
+    leftmargin=5mm,
+    rightmargin=5mm,
     dpi=300
 )
 
 println("\nProject environment and settings configured successfully.")
 println("Ready to generate figures.")
-
-
-# --- 3. Helper Functions ---
 
 """
     setup_scenario_parameters(R0_baseline, a_scale)
@@ -82,8 +81,10 @@ function setup_scenario_parameters(R0_baseline::Float64, a_scale::Float64)
     # Scenario-dependent parameters [5]
     a = sqrt(R0_baseline) * 0.01 * a_scale
     m = 20.0 / (a_scale^2)
+    p = 0.5
+    epsilon = 0.5
 
-    return ModelParameters(r, a, m, g, L, s_M, s_T, b, c, h1, h2, theta)
+    return ModelParameters(r, a, m, g, L, s_M, s_T, b, c, h1, h2, theta, p, epsilon)
 end
 
 
@@ -98,50 +99,36 @@ treated nets. The simulation runs in two stages: pre- and post-intervention.
 function generate_figure3()
     println("Generating Figure 3: Model Dynamics...")
 
-    # 1. Set up the parameters for a representative scenario.
-    params = setup_scenario_parameters(5.0, 2.0)
+    # Scenario Parameters: R0_baseline ∈ [1.2, 5, 10] && a_scale ∈ [1, 2]
+    # Scenario [1, 1]: R0_baseline = 1.2, a_scale = 0.01
+    plot_1_1 = begin
+        params = setup_scenario_parameters(1.2, 1.0)
+        # --- STAGE 1: SIMULATE THE RISE OF THE EPIDEMIC (NO NETS) ---
+        u0_stage1 = [0.9, 0.1, 0.8, 0.05, 0.05, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
+        tspan_stage1 = (0.0, 500.0)  # Simulate for 200 days
+        params.p = 0.0      # No nets in stage 1
+        params.epsilon = 0.0 # No nets in stage 1
+        prob_stage1 = ODEProblem(malaria_ode!, u0_stage1, tspan_stage1, params)
+        sol_stage1 = solve(prob_stage1, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- STAGE 2: INTRODUCE INTERVENTION (NETS) AND SIMULATE DYNAMICS ---
+        u0_stage2 = hcat(sol_stage1.u...)'[end, :] # Use the final state from stage 1 as initial condition for stage 2
+        params.p = 0.5      # 50% coverage with insecticide-treated nets
+        params.epsilon = 0.5 # 50% efficacy of the nets
+        t_intervention = 500.0    # Time of intervention (end of stage 1)
+        tspan_stage2 = (t_intervention, t_intervention + 750.0)
+        prob_stage2 = ODEProblem(malaria_ode!, u0_stage2, tspan_stage2, params)
+        sol_stage2 = solve(prob_stage2, Tsit5(), reltol=1e-6, abstol=1e-6)
 
-    # --- STAGE 1: SIMULATE THE RISE OF THE EPIDEMIC (NO NETS) ---
-
-    # 2. Define the initial conditions: a mostly susceptible population with a
-    u0_stage1 = [0.9, 0.1, 0.8, 0.05, 0.05, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
-    tspan_stage1 = (0.0, 500.0)  # Simulate for 200 days
-    p_stage1 = (params, 0.0, 0.0) # No intervention (p=0, ε=0)
-    prob_stage1 = ODEProblem(malaria_ode!, u0_stage1, tspan_stage1, p_stage1)
-    sol_stage1 = solve(prob_stage1, Tsit5(), reltol=1e-6, abstol=1e-6)
-    ee_sol_stage1 = compute_endemic_equilibrium(params, 0.0, 0.0)
-    println("Stage 1 simulation complete.")
-
-    u0_stage2 = hcat(sol_stage1.u...)'[end, :] # Use the final state from stage 1 as initial condition for stage 2
-    # --- STAGE 2: INTRODUCE INTERVENTION (NETS) AND SIMULATE DYNAMICS ---
-    # 3. Define the intervention parameters and simulate the dynamics post-intervention.
-    p_intervention = 0.5      # 50% coverage with insecticide-treated nets
-    epsilon_intervention = 0.5 # 50% efficacy of the nets
-    t_intervention = 500.0    # Time of intervention (end of stage 1)
-    tspan_stage2 = (t_intervention, t_intervention + 750.0) # Simulate for another 200 days
-    p_stage2 = (params, p_intervention, epsilon_intervention)
-    prob_stage2 = ODEProblem(malaria_ode!, u0_stage2, tspan_stage2, p_stage2)
-    sol_stage2 = solve(prob_stage2, Tsit5(), reltol=1e-6, abstol=1e-6)
-    println("Stage 2 simulation complete.")
-
-    # --- PLOTTING ---
-    # Plot the results from Stage 1
-    final_plot = begin
-        # --- 3. Figure Generation ---
-        # 3a. Plot the epidemic curve from Stage 1 to visualize the outbreak dynamics.
+        # --- PLOTTING ---
         plot(
             sol_stage1.t,
             hcat(sol_stage1.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
-            title="Figure 3: Model Dynamics",
+            title="Low Prevalence, Low Biting Rate",
             xlabel="Time (days)",
             ylabel="Proportion of Population",
-            labels=[L"S_H" L"I_H" L"S_M" L"I_M"],
             color=[:blue :red :green :orange],
             legend=:right
         )
-        # for (i, y) in enumerate([ee_sol_stage1.S_H, ee_sol_stage1.I_H, ee_sol_stage1.S_M, ee_sol_stage1.I_M])
-        #     plot!([-10, 500], [y, y], lw=0.5, color=([:blue, :red, :green, :orange][i]), label=([L"S_H^*", L"I_H^*", L"S_M^*", L"I_M^*"][i]))
-        # end
 
         plot!(
             sol_stage2.t,
@@ -150,28 +137,226 @@ function generate_figure3()
             label=["" "" "" ""]
         )
 
-        vline!([t_intervention], lw=2, ls=:dash, color=:black, label="Intervention Start")
+        vline!([t_intervention], lw=2, ls=:dash, color=:black)
     end
+    println("Panel (1,1) done... ")
 
-    # Save the completed figure
-    savefig(final_plot, joinpath(PLOTS_DIR, "figure3_intervention_dynamics.png"))
-    println("... Figure 3 saved successfully.")
+    # Scenario [1, 2]: R0_baseline = 1.2, a_scale = 2.0
+    plot_1_2 = begin
+        params = setup_scenario_parameters(1.2, 2.0)
+        # --- STAGE 1: SIMULATE THE RISE OF THE EPIDEMIC (NO NETS) ---
+        u0_stage1 = [0.9, 0.1, 0.8, 0.05, 0.05, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
+        tspan_stage1 = (0.0, 500.0)  # Simulate for 200 days
+        params.p = 0.0      # No nets in stage 1
+        params.epsilon = 0.0 # No nets in stage 1
+        prob_stage1 = ODEProblem(malaria_ode!, u0_stage1, tspan_stage1, params)
+        sol_stage1 = solve(prob_stage1, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- STAGE 2: INTRODUCE INTERVENTION (NETS) AND SIMULATE DYNAMICS ---
+        u0_stage2 = hcat(sol_stage1.u...)'[end, :] # Use the final state from stage 1 as initial condition for stage 2
+        params.p = 0.5      # 50% coverage with insecticide-treated nets
+        params.epsilon = 0.5 # 50% efficacy of the nets
+        t_intervention = 500.0    # Time of intervention (end of stage 1)
+        tspan_stage2 = (t_intervention, t_intervention + 750.0)
+        prob_stage2 = ODEProblem(malaria_ode!, u0_stage2, tspan_stage2, params)
+        sol_stage2 = solve(prob_stage2, Tsit5(), reltol=1e-6, abstol=1e-6) # Increased accuracy
+        # --- PLOTTING ---
+        plot(
+            sol_stage1.t,
+            hcat(sol_stage1.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            title="Low Prevalence, High Biting Rate",
+            xlabel="Time (days)",
+            ylabel="Proportion of Population",
+            labels=[L"S_H" L"I_H" L"S_M" L"I_M"],
+            color=[:blue :red :green :orange],
+            legend=:right
+        )
+        plot!(
+            sol_stage2.t,
+            hcat(sol_stage2.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            color=[:blue :red :green :orange],
+            label=["" "" "" ""]
+        )
+        vline!([t_intervention], lw=2, ls=:dash, color=:black)
+    end
+    println("Panel (1,2) done... ")
+
+    # Scenario [2, 1]: R0_baseline = 5.0, a_scale = 1.0
+    plot_2_1 = begin
+        params = setup_scenario_parameters(5.0, 1.0)
+        # --- STAGE 1: SIMULATE THE RISE OF THE EPIDEMIC (NO NETS) ---
+        u0_stage1 = [0.9, 0.1, 0.8, 0.05, 0.05, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
+        tspan_stage1 = (0.0, 500.0)  # Simulate for 200 days
+        params.p = 0.0      # No nets in stage 1
+        params.epsilon = 0.0 # No nets in stage 1
+        prob_stage1 = ODEProblem(malaria_ode!, u0_stage1, tspan_stage1, params)
+        sol_stage1 = solve(prob_stage1, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- STAGE 2: INTRODUCE INTERVENTION (NETS) AND SIMULATE DYNAMICS ---
+        u0_stage2 = hcat(sol_stage1.u...)'[end, :] # Use the final state from stage 1 as initial condition for stage 2
+        params.p = 0.5      # 50% coverage with insecticide-treated nets
+        params.epsilon = 0.5 # 50% efficacy of the nets
+        t_intervention = 500.0    # Time of intervention (end of stage 1)
+        tspan_stage2 = (t_intervention, t_intervention + 750.0)
+        prob_stage2 = ODEProblem(malaria_ode!, u0_stage2, tspan_stage2, params)
+        sol_stage2 = solve(prob_stage2, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- PLOTTING ---
+        plot(
+            sol_stage1.t,
+            hcat(sol_stage1.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            title="Moderate Prevalence, Low Biting Rate",
+            xlabel="Time (days)",
+            ylabel="Proportion of Population",
+            color=[:blue :red :green :orange],
+            legend=:right
+        )
+        plot!(
+            sol_stage2.t,
+            hcat(sol_stage2.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            color=[:blue :red :green :orange],
+            label=["" "" "" ""]
+        )
+        vline!([t_intervention], lw=2, ls=:dash, color=:black)
+    end
+    println("Panel (2,1) done... ")
+
+    # Scenario [2, 2]: R0_baseline = 5.0, a_scale = 2.0
+    plot_2_2 = begin
+        params = setup_scenario_parameters(5.0, 2.0)
+        # --- STAGE 1: SIMULATE THE RISE OF THE EPIDEMIC (NO NETS) ---
+        u0_stage1 = [0.9, 0.1, 0.8, 0.05, 0.05, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
+        tspan_stage1 = (0.0, 500.0)  # Simulate for 200 days
+        params.p = 0.0      # No nets in stage 1
+        params.epsilon = 0.0 # No nets in stage 1
+        prob_stage1 = ODEProblem(malaria_ode!, u0_stage1, tspan_stage1, params)
+        sol_stage1 = solve(prob_stage1, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- STAGE 2: INTRODUCE INTERVENTION (NETS) AND SIMULATE DYNAMICS ---
+        u0_stage2 = hcat(sol_stage1.u...)'[end, :] # Use the final state from stage 1 as initial condition for stage 2
+        params.p = 0.5      # 50% coverage with insecticide-treated nets
+        params.epsilon = 0.5 # 50% efficacy of the nets
+        t_intervention = 500.0    # Time of intervention (end of stage 1)
+        tspan_stage2 = (t_intervention, t_intervention + 750.0)
+        prob_stage2 = ODEProblem(malaria_ode!, u0_stage2, tspan_stage2, params)
+        sol_stage2 = solve(prob_stage2, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- PLOTTING ---
+        plot(
+            sol_stage1.t,
+            hcat(sol_stage1.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            title="Moderate Prevalence, High Biting Rate",
+            xlabel="Time (days)",
+            ylabel="Proportion of Population",
+            color=[:blue :red :green :orange],
+            legend=:right
+        )
+        plot!(
+            sol_stage2.t,
+            hcat(sol_stage2.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            color=[:blue :red :green :orange],
+            label=["" "" "" ""]
+        )
+        vline!([t_intervention], lw=2, ls=:dash, color=:black)
+    end
+    println("Panel (2,2) done... ")
+
+    # Scenario [3, 1]: R0_baseline = 10.0, a_scale = 1.0
+    plot_3_1 = begin
+        params = setup_scenario_parameters(10.0, 1.0)
+        # --- STAGE 1: SIMULATE THE RISE OF THE EPIDEMIC (NO NETS) ---
+        u0_stage1 = [0.9, 0.1, 0.8, 0.05, 0.05, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
+        tspan_stage1 = (0.0, 500.0)  # Simulate for 200 days
+        params.p = 0.0      # No nets in stage 1
+        params.epsilon = 0.0 # No nets in stage 1
+        prob_stage1 = ODEProblem(malaria_ode!, u0_stage1, tspan_stage1, params)
+        sol_stage1 = solve(prob_stage1, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- STAGE 2: INTRODUCE INTERVENTION (NETS) AND SIMULATE DYNAMICS ---
+        u0_stage2 = hcat(sol_stage1.u...)'[end, :] # Use the final state from stage 1 as initial condition for stage 2
+        params.p = 0.5      # 50% coverage with insecticide-treated nets
+        params.epsilon = 0.5 # 50% efficacy of the nets
+        t_intervention = 500.0    # Time of intervention (end of stage 1)
+        tspan_stage2 = (t_intervention, t_intervention + 750.0)
+        prob_stage2 = ODEProblem(malaria_ode!, u0_stage2, tspan_stage2, params)
+        sol_stage2 = solve(prob_stage2, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- PLOTTING ---
+        plot(
+            sol_stage1.t,
+            hcat(sol_stage1.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            title="High Prevalence, Low Biting Rate",
+            xlabel="Time (days)",
+            ylabel="Proportion of Population",
+            color=[:blue :red :green :orange],
+            legend=:right
+        )
+        plot!(
+            sol_stage2.t,
+            hcat(sol_stage2.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            color=[:blue :red :green :orange],
+            label=["" "" "" ""]
+        )
+        vline!([t_intervention], lw=2, ls=:dash, color=:black)
+    end
+    println("Panel (3,1) done... ")
+
+    # Scenario [3, 2]: R0_baseline = 10.0, a_scale = 2.0
+    plot_3_2 = begin
+        params = setup_scenario_parameters(10.0, 2.0)
+        # --- STAGE 1: SIMULATE THE RISE OF THE EPIDEMIC (NO NETS) ---
+        u0_stage1 = [0.9, 0.1, 0.8, 0.05, 0.05, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
+        tspan_stage1 = (0.0, 500.0)  # Simulate for 200 days
+        params.p = 0.0      # No nets in stage 1
+        params.epsilon = 0.0 # No nets in stage 1
+        prob_stage1 = ODEProblem(malaria_ode!, u0_stage1, tspan_stage1, params)
+        sol_stage1 = solve(prob_stage1, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- STAGE 2: INTRODUCE INTERVENTION (NETS) AND SIMULATE DYNAMICS ---
+        u0_stage2 = hcat(sol_stage1.u...)'[end, :] # Use the final state from stage 1 as initial condition for stage 2
+        params.p = 0.5      # 50% coverage with insecticide-treated nets
+        params.epsilon = 0.5 # 50% efficacy of the nets
+        t_intervention = 500.0    # Time of intervention (end of stage 1)
+        tspan_stage2 = (t_intervention, t_intervention + 750.0)
+        prob_stage2 = ODEProblem(malaria_ode!, u0_stage2, tspan_stage2, params)
+        sol_stage2 = solve(prob_stage2, Tsit5(), reltol=1e-6, abstol=1e-6)
+        # --- PLOTTING ---
+        plot(
+            sol_stage1.t,
+            hcat(sol_stage1.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            title="High Prevalence, High Biting Rate",
+            xlabel="Time (days)",
+            ylabel="Proportion of Population",
+            color=[:blue :red :green :orange],
+            legend=:right
+        )
+        plot!(
+            sol_stage2.t,
+            hcat(sol_stage2.u...)'[:, [1, 2, 3, 6]], # Plot S_H, I_H, S_M, I_M
+            color=[:blue :red :green :orange],
+            label=["" "" "" ""]
+        )
+        vline!([t_intervention], lw=2, ls=:dash, color=:black)
+    end
+    println("Panel (3,2) done... ")
+
+    # Combine all subplots into a 3x2 grid layout
+    final_plot = plot(
+        plot_1_1, plot_1_2,
+        plot_2_1, plot_2_2,
+        plot_3_1, plot_3_2,
+        layout = (3, 2),
+        size = (1800, 1600)
+    )
+
+    # Save plots
+    savefig(plot_1_1, joinpath(PLOTS_DIR, "figure3_panel_1_1.png"))
+    savefig(plot_1_1, joinpath(PLOTS_DIR, "figure3_panel_1_1.pdf"))
+    savefig(plot_1_2, joinpath(PLOTS_DIR, "figure3_panel_1_2.png"))
+    savefig(plot_1_2, joinpath(PLOTS_DIR, "figure3_panel_1_2.pdf"))
+    savefig(plot_2_1, joinpath(PLOTS_DIR, "figure3_panel_2_1.png"))
+    savefig(plot_2_1, joinpath(PLOTS_DIR, "figure3_panel_2_1.pdf"))
+    savefig(plot_2_2, joinpath(PLOTS_DIR, "figure3_panel_2_2.png"))
+    savefig(plot_2_2, joinpath(PLOTS_DIR, "figure3_panel_2_2.pdf"))
+    savefig(plot_3_1, joinpath(PLOTS_DIR, "figure3_panel_3_1.png"))
+    savefig(plot_3_1, joinpath(PLOTS_DIR, "figure3_panel_3_1.pdf"))
+    savefig(plot_3_2, joinpath(PLOTS_DIR, "figure3_panel_3_2.png"))
+    savefig(plot_3_2, joinpath(PLOTS_DIR, "figure3_panel_3_2.pdf"))
+    savefig(final_plot, joinpath(PLOTS_DIR, "figure3_combined.png"))
+    savefig(final_plot, joinpath(PLOTS_DIR, "figure3_combined.pdf"))
 end
 
-
-# --- 5. Main Execution Block ---
-
-"""
-The main function to run our script.
-"""
-function main()
-    println("\n--- Starting Figure Generation ---")
-    generate_figure3()
-    # Calls for other figures will be added here.
-    println("\n--- Figure Generation Complete ---")
-end
-
-# This ensures that main() is called only when the script is executed directly.
-if abspath(PROGRAM_FILE) == @__FILE__
-    main()
-end
+# Call the function to generate Figure 3
+generate_figure3()

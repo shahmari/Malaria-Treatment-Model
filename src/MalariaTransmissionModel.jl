@@ -3,8 +3,8 @@ module MalariaTransmissionModel
 using LinearAlgebra, NLsolve
 
 export ModelParameters, malaria_ode!, calculate_R0, calculate_psi, 
-       calculate_pi_T, calculate_phi_T, calculate_R0_bar, compute_dfe, 
-       compute_R0_NGM, compute_endemic_equilibrium, compute_dfe_numeric
+    calculate_pi_T, calculate_phi_T, calculate_R0_bar, compute_dfe, 
+    compute_R0_NGM, compute_endemic_equilibrium, compute_dfe_numeric
 
 """
     ModelParameters
@@ -12,7 +12,7 @@ export ModelParameters, malaria_ode!, calculate_R0, calculate_psi,
 A struct to hold all fixed parameters of the malaria transmission model.
 This approach ensures type stability and high performance for the ODE solver and other calculations.
 """
-struct ModelParameters
+mutable struct ModelParameters
     # Human Parameters
     r::Float64      # Human recovery rate (day^-1)
 
@@ -32,21 +32,22 @@ struct ModelParameters
     h1::Float64     # Treatment waning rate 1 (day^-1)
     h2::Float64     # Treatment waning rate 2 (day^-1)
     theta::Float64  # Factor by which treatment increases incubation period
+
+    # Control Parameters
+    p::Float64      # Coverage
+    epsilon::Float64 # Efficacy
 end
 
 """
-    malaria_ode!(du, u, p_all, t)
+    malaria_ode!(du, u, params, t)
 
 In-place function defining the 11-compartment ODE system for malaria transmission.
 Designed for use with DifferentialEquations.jl solvers.
-The `p_all` argument is a tuple containing `(params, p, epsilon)`.
+The `params` argument is a ModelParameters struct.
 """
-function malaria_ode!(du, u, p_all, t)
-    # Unpack all parameters from the p_all tuple
-    params, p, epsilon = p_all
-    
-    r, a, m, g, L, s_M, s_T, b, c, h1, h2 = 
-        params.r, params.a, params.m, params.g, params.L, params.s_M, params.s_T, params.b, params.c, params.h1, params.h2
+function malaria_ode!(du, u, params, t)
+    r, a, m, g, L, s_M, s_T, b, c, h1, h2, p, epsilon = 
+     params.r, params.a, params.m, params.g, params.L, params.s_M, params.s_T, params.b, params.c, params.h1, params.h2, params.p, params.epsilon
 
     # Unpack state variables for clarity
     S_H, I_H, S_M, E1_M, E2_M, I_M, S1_T, S2_T, E1_T, E2_T, I_T = u
@@ -75,12 +76,12 @@ function malaria_ode!(du, u, p_all, t)
 end
 
 """
-    calculate_pi_T(params, p, epsilon)
+    calculate_pi_T(params)
 
 Calculates π_T, the probability that a mosquito acquires treatment during its latent period.
 """
-function calculate_pi_T(params::ModelParameters, p::Float64, epsilon::Float64)
-    a, L, s_M, g = params.a, params.L, params.s_M, params.g
+function calculate_pi_T(params::ModelParameters)
+    a, L, s_M, g, p, epsilon = params.a, params.L, params.s_M, params.g, params.p, params.epsilon
     treat_rate = epsilon * p * a
     return treat_rate / (treat_rate + L * s_M + g)
 end
@@ -101,15 +102,16 @@ function calculate_phi_T(params::ModelParameters)
 end
 
 """
-    calculate_psi(params, p, epsilon)
+    calculate_psi(params)
 
 Calculates the total control effect, ψ = R₀ / R₀_bar.
 """
-function calculate_psi(params::ModelParameters, p::Float64, epsilon::Float64)
-    S_M_star = compute_dfe(params, p, epsilon).S_M
-    pi_T = calculate_pi_T(params, p, epsilon)
+function calculate_psi(params::ModelParameters)
+    S_M_star = compute_dfe(params).S_M
+    pi_T = calculate_pi_T(params)
     phi_T = calculate_phi_T(params)
-    
+    p = params.p
+
     coverage_term = (1 - p)^2
     treatment_mix_term = (1 - pi_T) + phi_T * pi_T
     
@@ -128,24 +130,23 @@ function calculate_R0_bar(params::ModelParameters)
 end
 
 """
-    calculate_R0(params, p, epsilon)
+    calculate_R0(params)
 
 Calculates the basic reproduction number, R₀, using the symbolic Ross-Macdonald method.
 """
-function calculate_R0(params::ModelParameters, p::Float64, epsilon::Float64)
+function calculate_R0(params::ModelParameters)
     R0_bar = calculate_R0_bar(params)
-    psi = calculate_psi(params, p, epsilon)
+    psi = calculate_psi(params)
     return psi * R0_bar
 end
 
 """
-    compute_dfe(params, p, epsilon)
+    compute_dfe(params)
 
 Computes the full 11-component state vector for the Disease-Free Equilibrium (DFE).
 """
-function compute_dfe(params::ModelParameters, p::Float64, epsilon::Float64)
-    # Closed-form solution for DFE, matching legacy code logic
-    a, g, h1, h2 = params.a, params.g, params.h1, params.h2
+function compute_dfe(params::ModelParameters)
+    a, g, h1, h2, p, epsilon = params.a, params.g, params.h1, params.h2, params.p, params.epsilon
     treat_rate = epsilon * p * a
 
     S1_T_star = treat_rate / (treat_rate + h1 + g)
@@ -153,14 +154,14 @@ function compute_dfe(params::ModelParameters, p::Float64, epsilon::Float64)
     S_M_star_val = 1.0 - S1_T_star - S2_T_star
 
     return (S_H=1.0, I_H=0.0, 
-            S_M=S_M_star_val, 
-            E1_M=0.0, E2_M=0.0, I_M=0.0, 
-            S1_T=S1_T_star, S2_T=S2_T_star, 
-            E1_T=0.0, E2_T=0.0, I_T=0.0)
+         S_M=S_M_star_val, 
+         E1_M=0.0, E2_M=0.0, I_M=0.0, 
+         S1_T=S1_T_star, S2_T=S2_T_star, 
+         E1_T=0.0, E2_T=0.0, I_T=0.0)
 end
 
 """
-    compute_dfe_numeric(params, p, epsilon)
+    compute_dfe_numeric(params)
 
 Numerically computes the disease-free equilibrium (DFE) state by solving the steady-state subsystem.
 Returns a NamedTuple with fields:
@@ -168,40 +169,40 @@ Returns a NamedTuple with fields:
   :S_M, :E1_M, :E2_M, :I_M,
   :S1_T, :S2_T, :E1_T, :E2_T, :I_T
 """
-function compute_dfe_numeric(params::ModelParameters, p::Float64, epsilon::Float64)
+function compute_dfe_numeric(params::ModelParameters)
     S_H = 1.0
     I_H = 0.0
 
     function f!(F, vars)
-        S_M, S2_T = vars
-        a, g, h1, h2 = params.a, params.g, params.h1, params.h2
-        treat_rate = epsilon * p * a
+     S_M, S2_T = vars
+     a, g, h1, h2, p, epsilon = params.a, params.g, params.h1, params.h2, params.p, params.epsilon
+     treat_rate = epsilon * p * a
 
-        S1_T = treat_rate * (S_M + S2_T) / (h1 + g)
-        F[1] = g + h2 * S2_T - ((treat_rate + g) * S_M)
-        F[2] = h1 * S1_T - ((treat_rate * S2_T + h2 + g) * S2_T)
+     S1_T = treat_rate * (S_M + S2_T) / (h1 + g)
+     F[1] = g + h2 * S2_T - ((treat_rate + g) * S_M)
+     F[2] = h1 * S1_T - ((treat_rate * S2_T + h2 + g) * S2_T)
     end
 
-    guess = [params.g / (params.g + epsilon * p * params.a), 0.0]
+    guess = [params.g / (params.g + params.epsilon * params.p * params.a), 0.0]
     sol = nlsolve(f!, guess)
     S_M, S2_T = sol.zero
-    S1_T = epsilon * p * params.a * (S_M + S2_T) / (params.h1 + params.g)
+    S1_T = params.epsilon * params.p * params.a * (S_M + S2_T) / (params.h1 + params.g)
 
     return (S_H=S_H, I_H=I_H,
-            S_M=S_M, E1_M=0.0, E2_M=0.0, I_M=0.0,
-            S1_T=S1_T, S2_T=S2_T,
-            E1_T=0.0, E2_T=0.0, I_T=0.0)
+         S_M=S_M, E1_M=0.0, E2_M=0.0, I_M=0.0,
+         S1_T=S1_T, S2_T=S2_T,
+         E1_T=0.0, E2_T=0.0, I_T=0.0)
 end
 
 """
-    compute_R0_NGM(params, p, epsilon)
+    compute_R0_NGM(params)
 
 Computes R₀ using the Next Generation Matrix (NGM) method.
 """
-function compute_R0_NGM(params::ModelParameters, p::Float64, epsilon::Float64)
-    r, a, m, g, L, s_M, s_T, b, c = 
-        params.r, params.a, params.m, params.g, params.L, params.s_M, params.s_T, params.b, params.c
-    S_M_star = compute_dfe(params, p, epsilon).S_M
+function compute_R0_NGM(params::ModelParameters)
+    r, a, m, g, L, s_M, s_T, b, c, p, epsilon = 
+        params.r, params.a, params.m, params.g, params.L, params.s_M, params.s_T, params.b, params.c, params.p, params.epsilon
+    S_M_star = compute_dfe(params).S_M
     treat_rate = epsilon * p * a
 
     # Infected compartments order:
@@ -229,15 +230,15 @@ function compute_R0_NGM(params::ModelParameters, p::Float64, epsilon::Float64)
 end
 
 """
-    compute_endemic_equilibrium(params, p, epsilon; u0_guess=nothing)
+    compute_endemic_equilibrium(params; u0_guess=nothing)
 
 Numerically solves for the endemic equilibrium state of the ODE system.
 """
-function compute_endemic_equilibrium(params::ModelParameters, p::Float64, epsilon::Float64; u0_guess=nothing)
-    # Unpack parameters
+function compute_endemic_equilibrium(params::ModelParameters; u0_guess=nothing)
     a, b, c, m = params.a, params.b, params.c, params.m
     r, g, h1, h2 = params.r, params.g, params.h1, params.h2
     L, s_M, s_T = params.L, params.s_M, params.s_T
+    p, epsilon = params.p, params.epsilon
 
     # Erlang-adjusted per-stage rates
     λ1M = L * s_M
@@ -274,7 +275,7 @@ function compute_endemic_equilibrium(params::ModelParameters, p::Float64, epsilo
     end
 
     # Initial guess: DFE for SM, zero for S2T, tiny IH
-    dfe = compute_dfe(params, p, epsilon)
+    dfe = compute_dfe(params)
     guess = [dfe.S_M, 0.0, 1.0]
 
     sol = nlsolve(resid!, guess; ftol=1e-10, xtol=1e-10)
@@ -282,11 +283,11 @@ function compute_endemic_equilibrium(params::ModelParameters, p::Float64, epsilo
         @warn "Endemic-equilibrium solver failed to converge"
     end
 
-    SM, S2T, IH = sol.zero
+    SM, S2_T, IH = sol.zero
     SH = 1.0 - IH
 
     # Reconstruct all other compartments
-    S1T = τ * (SM + S2T) / (h1 + g)
+    S1T = τ * (SM + S2_T) / (h1 + g)
     E1M = (1 - p) * a * c * IH * SM / (τ + λ1M + g)
     E2M = λ1M * E1M / (λ2M + g)
     IM  = λ2M * E2M / g
@@ -296,8 +297,8 @@ function compute_endemic_equilibrium(params::ModelParameters, p::Float64, epsilo
     IT  = λ2T * E2T / g
 
     return (S_H=SH, I_H=IH,
-            S_M=SM, E1_M=E1M, E2_M=E2M, I_M=IM,
-            S1_T=S1T, S2_T=S2T, E1_T=E1T, E2_T=E2T, I_T=IT)
+        S_M=SM, E1_M=E1M, E2_M=E2M, I_M=IM,
+        S1_T=S1T, S2_T=S2_T, E1_T=E1T, E2_T=E2T, I_T=IT)
 end
 
 end # end of module MalariaTransmissionModel
