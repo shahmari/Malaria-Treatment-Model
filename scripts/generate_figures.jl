@@ -66,7 +66,7 @@ A helper function to create a ModelParameters object for a given transmission sc
 The formulas are based on the project outline.[5]
 """
 function setup_scenario_parameters(R0_baseline::Float64, a_scale::Float64)
-    # These base parameters are fixed across scenarios as per the outline [5]
+    # These base parameters are fixed across scenarios as per the outline [1]
     b = 0.5
     c = 0.5
     r = 0.01
@@ -75,16 +75,15 @@ function setup_scenario_parameters(R0_baseline::Float64, a_scale::Float64)
     theta = 2.0
     s_M = 1.0 / 14.0
     s_T = s_M / theta
-    h1 = 0.0 # No waning for this figure
+    h1 = 0.0
     h2 = 0.0
-
-    # Scenario-dependent parameters [5]
     a = sqrt(R0_baseline) * 0.01 * a_scale
     m = 20.0 / (a_scale^2)
     p = 0.5
     epsilon = 0.5
+    latent_treatment_switch = 0.0
 
-    return ModelParameters(r, a, m, g, L, s_M, s_T, b, c, h1, h2, theta, p, epsilon)
+    return ModelParameters(r, a, m, g, L, s_M, s_T, b, c, h1, h2, theta, p, epsilon, latent_treatment_switch)
 end
 
 
@@ -356,7 +355,196 @@ function generate_figure3()
     savefig(plot_3_2, joinpath(PLOTS_DIR, "figure3_panel_3_2.pdf"))
     savefig(final_plot, joinpath(PLOTS_DIR, "figure3_combined.png"))
     savefig(final_plot, joinpath(PLOTS_DIR, "figure3_combined.pdf"))
+    println("Figure 3 saved as PNG and PDF in '$PLOTS_DIR'.")
+end
+
+"""
+    generate_figure4()
+
+Generates and saves the plot for Figure 4, which is a 2x3 grid of filled contour plots
+showing the total control effect (ψ) for six different epidemiological scenarios.
+For this figure, the effect of treatment during the latent stage is turned OFF.
+"""
+function generate_figure4()
+    println("Generating Figure 4: Control Effect (ψ) Contour Grid...")
+
+    # Define the ranges for the plot axes, as per the project outline.[1]
+    p_range = 0.0:0.02:1.0       # Bed net coverage
+    epsilon_range = 0.0:0.02:1.0 # Proportion of nets treated
+
+    # --- Panel [1, 1]: Low Prevalence, Low Biting Rate ---
+    plot_1_1 = begin
+        params = setup_scenario_parameters(1.2, 1.0)
+        params.latent_treatment_switch = 0.0 # Turn OFF latent treatment effect
+        psi_grid = zeros(length(p_range), length(epsilon_range))
+
+        for (ip, p_val) in enumerate(p_range)
+            for (ie, epsilon_val) in enumerate(epsilon_range)
+                params.p = p_val
+                params.epsilon = epsilon_val
+                psi_grid[ip, ie] = calculate_psi(params)
+            end
+        end
+
+        contourf(
+            epsilon_range, p_range, psi_grid,
+            title="Low Prevalence, Low Biting Rate",
+            xlabel=L"\epsilon" * " (Treatment Proportion)",
+            ylabel=L"p" * " (Bed Net Coverage)",
+            colorbar_title=L"\psi",
+            clims=(0, 1), c=:viridis
+        )
+    end
+    println("Panel (1,1) done... ")
+
+    # --- Panel [2, 3]: Low Prevalence, High Biting Rate ---
+    plot_1_2 = begin
+        params = setup_scenario_parameters(1.2, 2.0)
+        params.latent_treatment_switch = 0.0 # Turn OFF latent treatment effect
+        psi_grid = zeros(length(p_range), length(epsilon_range))
+
+        for (ip, p_val) in enumerate(p_range)
+            for (ie, epsilon_val) in enumerate(epsilon_range)
+                params.p = p_val
+                params.epsilon = epsilon_val
+                psi_grid[ip, ie] = calculate_psi(params)
+            end
+        end
+
+        contourf(
+            epsilon_range, p_range, psi_grid,
+            title="Low Prevalence, High Biting Rate",
+            xlabel=L"\epsilon" * " (Treatment Proportion)",
+            ylabel=L"p" * " (Bed Net Coverage)",
+            colorbar_title=L"\psi",
+            clims=(0, 1), c=:viridis
+        )
+    end
+    println("Panel (1,2) done... ")
+
+    # --- Panel [3, 2]: Moderate Prevalence, Low Biting Rate ---
+    plot_2_1 = begin
+        params = setup_scenario_parameters(5.0, 1.0)
+        params.latent_treatment_switch = 0.0 # Turn OFF latent treatment effect
+        psi_grid = zeros(length(p_range), length(epsilon_range))
+
+        for (ip, p_val) in enumerate(p_range)
+            for (ie, epsilon_val) in enumerate(epsilon_range)
+                params.p = p_val
+                params.epsilon = epsilon_val
+                psi_grid[ip, ie] = calculate_psi(params)
+            end
+        end
+
+        contourf(
+            epsilon_range, p_range, psi_grid,
+            title="Moderate Prevalence, Low Biting Rate",
+            xlabel=L"\epsilon" * " (Treatment Proportion)",
+            ylabel=L"p" * " (Bed Net Coverage)",
+            colorbar_title=L"\psi",
+            clims=(0, 1), c=:viridis
+        )
+    end
+    println("Panel (2,1) done... ")
+
+    # --- Panel [2, 2]: Moderate Prevalence, High Biting Rate ---
+    plot_2_2 = begin
+        params = setup_scenario_parameters(5.0, 2.0)
+        params.latent_treatment_switch = 0.0 # Turn OFF latent treatment effect
+        psi_grid = zeros(length(p_range), length(epsilon_range))
+
+        for (ip, p_val) in enumerate(p_range)
+            for (ie, epsilon_val) in enumerate(epsilon_range)
+                params.p = p_val
+                params.epsilon = epsilon_val
+                psi_grid[ip, ie] = calculate_psi(params)
+            end
+        end
+
+        contourf(
+            epsilon_range, p_range, psi_grid,
+            title="Moderate Prevalence, High Biting Rate",
+            xlabel=L"\epsilon" * " (Treatment Proportion)",
+            ylabel=L"p" * " (Bed Net Coverage)",
+            colorbar_title=L"\psi",
+            clims=(0, 1), c=:viridis
+        )
+    end
+    println("Panel (2,2) done... ")
+
+    # --- Panel [4, 2]: High Prevalence, Low Biting Rate ---
+    plot_3_1 = begin
+        params = setup_scenario_parameters(10.0, 1.0)
+        params.latent_treatment_switch = 0.0 # Turn OFF latent treatment effect
+        psi_grid = zeros(length(p_range), length(epsilon_range))
+
+        for (ip, p_val) in enumerate(p_range)
+            for (ie, epsilon_val) in enumerate(epsilon_range)
+                params.p = p_val
+                params.epsilon = epsilon_val
+                psi_grid[ip, ie] = calculate_psi(params)
+            end
+        end
+
+        contourf(
+            epsilon_range, p_range, psi_grid,
+            title="High Prevalence, Low Biting Rate",
+            xlabel=L"\epsilon" * " (Treatment Proportion)",
+            ylabel=L"p" * " (Bed Net Coverage)",
+            colorbar_title=L"\psi",
+            clims=(0, 1), c=:viridis
+        )
+    end
+    println("Panel (3,1) done... ")
+
+    # --- Panel [4, 3]: High Prevalence, High Biting Rate ---
+    plot_3_2 = begin
+        params = setup_scenario_parameters(10.0, 2.0)
+        params.latent_treatment_switch = 0.0 # Turn OFF latent treatment effect
+        psi_grid = zeros(length(p_range), length(epsilon_range))
+
+        for (ip, p_val) in enumerate(p_range)
+            for (ie, epsilon_val) in enumerate(epsilon_range)
+                params.p = p_val
+                params.epsilon = epsilon_val
+                psi_grid[ip, ie] = calculate_psi(params)
+            end
+        end
+
+        contourf(
+            epsilon_range, p_range, psi_grid,
+            title="High Prevalence, High Biting Rate",
+            xlabel=L"\epsilon" * " (Treatment Proportion)",
+            ylabel=L"p" * " (Bed Net Coverage)",
+            colorbar_title=L"\psi",
+            clims=(0, 1), c=:viridis
+        )
+    end
+    println("Panel (3,2) done... ")
+
+    # --- Combine all subplots into a 3x2 grid layout ---
+    final_plot = plot(
+        plot_1_1, plot_1_2,
+        plot_2_1, plot_2_2,
+        plot_3_1, plot_3_2,
+        layout=(3, 2),
+        size=(1400, 1500)
+    )
+
+    # --- Save all plots ---
+    savefig(plot_1_1, joinpath(PLOTS_DIR, "figure4_panel_1_1.png"))
+    savefig(plot_1_2, joinpath(PLOTS_DIR, "figure4_panel_1_2.png"))
+    savefig(plot_2_1, joinpath(PLOTS_DIR, "figure4_panel_2_1.png"))
+    savefig(plot_2_2, joinpath(PLOTS_DIR, "figure4_panel_2_2.png"))
+    savefig(plot_3_1, joinpath(PLOTS_DIR, "figure4_panel_3_1.png"))
+    savefig(plot_3_2, joinpath(PLOTS_DIR, "figure4_panel_3_2.png"))
+    savefig(final_plot, joinpath(PLOTS_DIR, "figure4_combined.png"))
+    savefig(final_plot, joinpath(PLOTS_DIR, "figure4_combined.pdf"))
+    println("Figure 4 saved as PNG and PDF in '$PLOTS_DIR'.")
 end
 
 # Call the function to generate Figure 3
 generate_figure3()
+
+# Call the function to generate Figure 4
+generate_figure4()
